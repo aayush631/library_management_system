@@ -1,2 +1,5 @@
-Open landing.html
-which is located inside users folder
+-Open landing.html to run project which is located inside users folder
+-the project will only run if database is created
+-the code to setup database in MYSql is in mysql.txt
+-create the folder library-management-system inside Xaamp>htdocs and save the files inside the folder.
+-lastly you can successfully run the project using local host (Xaamp) surver.
