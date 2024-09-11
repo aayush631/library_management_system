@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - Manage Users</title>
+    <link rel="stylesheet" href="./src/add-remove.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha512-6KZ2E+ie/KN6Qg3EZ3Fk0IlMFkF3Sb3O1Aodk8Nf5IujdsmvFAox4my1PEBOnhPcRkHp4z9WVcxG0HZEC4E0Fw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+<body>
+    <header>
+        <div class="container">
+            <img src="../icons/logo-1.png" alt="Logo" id="logo">
+            <nav>
+                <ul>
+                    <li><a href="./admindashboard.html">Home</a></li>
+                    <li><a href="./add-remove.html" class="active">Manage Users</a></li>
+                    <li><a href="./add-removebook.html">Manage Books</a></li>
+                    <li><a href="./location.html">Location & Rack</a></li>
+                    <li><a href="./issue.html">Issue Books</a></li>
+                    <li><a href="./receive.html">Receive Books</a></li>
+                    <li><a href="../user/landing.html">Logout</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    <main>
+        <div class="container">
+            <section class="manage-users">
+                <h2>Manage Users</h2>
+                <div class="form-container">
+                    <div class="form-box">
+                        <h3>Add User</h3>
+                        <form id="add-user-form">
+                            <div class="input-group">
+                                <label for="fullname">Full Name</label>
+                                <input type="text" id="fullname" name="fullname" required>
+                            </div>
+                            <div class="input-group">
+                                <label for="userid">User ID</label>
+                                <input type="text" id="userid" name="userid" required>
+                            </div>
+                            <div class="input-group">
+                                <label for="email">Email</label>
+                                <input type="email" id="email" name="email" required>
+                            </div>
+                            <div class="input-group">
+                                <label for="contact">Contact</label>
+                                <div class="contact-input">
+                                    <select id="country-code" name="country-code" required>
+                                        <option value="+977">+977</option>
+                                        <option value="+91">+91</option>
+                                    </select>
+                                    <input type="text" id="contact" name="contact" placeholder="Enter your contact number" required>
+                                </div>
+                            </div>
+                            <div class="input-group">
+                                <label for="password">Create Password</label>
+                                <div class="password-input">
+                                    <input type="password" id="password" name="password" required>
+                                    <i class="fas fa-eye password-toggle">view</i>
+                                </div>
+                            </div>
+                            <div class="input-group">
+                                <label for="confirm-password">Confirm Password</label>
+                                <div class="password-input">
+                                    <input type="password" id="confirm-password" name="confirm-password" required>
+                                    <i class="fas fa-eye confirm-password-toggle">view</i>
+                                </div>
+                            </div>
+                            <button type="submit" class="btn">Add User</button>
+                        </form>
+                    </div>
+                    <div class="form-box">
+                        <h3>Remove User</h3>
+                        <form id="remove-user-form">
+                            <div class="input-group">
+                                <label for="remove-userid">User ID</label>
+                                <input type="text" id="remove-userid" name="remove-userid" required>
+                            </div>
+                            <button type="submit" class="btn">Remove User</button>
+                        </form>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 Library Management System. All rights reserved.</p>
+        </div>
+    </footer>
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+    const addUserForm = document.getElementById('add-user-form');
+    const removeUserForm = document.getElementById('remove-user-form');
+
+    const togglePasswordVisibility = (toggleElement, passwordField) => {
+        toggleElement.addEventListener('click', function() {
+            const type = passwordField.getAttribute('type') === 'password' ? 'text' : 'password';
+            passwordField.setAttribute('type', type);
+            toggleElement.classList.toggle('fa-eye-slash');
+        });
+    };
+
+    addUserForm.addEventListener('submit', function(event) {
+        event.preventDefault();
+        const formData = new FormData(addUserForm);
+
+        fetch('../php/add_user.php', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.error) {
+                console.error('Error adding user:', data.error);
+                alert('Error adding user. Please try again.');
+            } else {
+                console.log('User added successfully:', data.success);
+                alert('User added successfully!');
+                addUserForm.reset();
+            }
+        })
+        .catch(error => console.error('Add user fetch error:', error));
+    });
+
+    removeUserForm.addEventListener('submit', function(event) {
+        event.preventDefault();
+        const formData = new FormData(removeUserForm);
+
+        fetch('../php/remove_user.php', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.error) {
+                console.error('Error removing user:', data.error);
+                alert('Error removing user. Please try again.');
+            } else {
+                console.log('User removed successfully:', data.success);
+                alert('User removed successfully!');
+                removeUserForm.reset();
+            }
+        })
+        .catch(error => console.error('Remove user fetch error:', error));
+    });
+
+    const passwordToggle = document.querySelector('.password-toggle');
+    const confirmPasswordToggle = document.querySelector('.confirm-password-toggle');
+    const passwordField = document.getElementById('password');
+    const confirmPasswordField = document.getElementById('confirm-password');
+
+    togglePasswordVisibility(passwordToggle, passwordField);
+    togglePasswordVisibility(confirmPasswordToggle, confirmPasswordField);
+});
+
+    </script>
+</body>
+</html>

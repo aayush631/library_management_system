@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Borrowed Books - Library Management System</title>
+    <link rel="stylesheet" href="./src/borrowedbooks.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <img src="../icons/logo-1.png" alt="Logo" id="logo">
+            <nav>
+                <ul>
+                    <li><a href="./admindashboard.html">Home</a></li>
+                    <li><a href="./add-remove.html">Manage Users</a></li>
+                    <li><a href="./add-removebook.html">Manage Books</a></li>
+                    <li><a href="./location.html">Location & Rack</a></li>
+                    <li><a href="./issue.html">Issue Books</a></li>
+                    <li><a href="./receive.html">Receive Books</a></li>
+                    <li><a href="../user/landing.html">Logout</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    <main>
+        <div class="container">
+            <h1>Borrowed Books Details</h1>
+            <div class="search-bar">
+                <input type="text" id="search-input" placeholder="Search by user or book name, user ID or book ID...">
+            </div>
+            <table id="borrowed-books-table">
+                <thead>
+                    <tr>
+                        <th>User ID</th>
+                        <th>User Name</th>
+                        <th>Book ID</th>
+                        <th>Book Title</th>
+                        <th>Due Date</th>
+                        <th>Fine Rs.</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Table rows will be dynamically generated here -->
+                </tbody>
+            </table>
+        </div>
+    </main>
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 Library Management System. All rights reserved.</p>
+        </div>
+    </footer>
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const searchInput = document.getElementById('search-input');
+        const borrowedBooksTableBody = document.querySelector('#borrowed-books-table tbody');
+    
+        async function fetchBorrowedBooks() {
+            try {
+                const response = await fetch('../php/borrowed_books_byuser.php');
+                const data = await response.json();
+    
+                if (data.success) {
+                    return data.data;
+                } else {
+                    console.error('Error fetching borrowed books:', data.message);
+                    return [];
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                return [];
+            }
+        }
+    
+        function renderTable(data) {
+            borrowedBooksTableBody.innerHTML = '';
+    
+            data.forEach(book => {
+                const row = document.createElement('tr');
+                const isOverdue = new Date(book.return_date) < new Date();
+                row.innerHTML = `
+                    <td>${book.user_id}</td>
+                    <td><strong>${book.user_fullname}</strong></td>
+                    <td>${book.book_id}</td>
+                    <td>${book.book_name}</td>
+                    <td>${book.return_date}</td>
+                    <td class="fine ${isOverdue ? 'overdue-fine' : ''}">${book.fine}${isOverdue ? '*' : ''}</td>
+                `;
+                borrowedBooksTableBody.appendChild(row);
+            });
+        }
+    
+        function filterBooks(borrowedBooks) {
+            const query = searchInput.value.toLowerCase();
+            const filteredBooks = borrowedBooks.filter(book => 
+                book.user_fullname.toLowerCase().includes(query) || 
+                book.book_name.toLowerCase().includes(query) ||
+                book.user_id.toLowerCase().includes(query) ||
+                book.book_id.toLowerCase().includes(query)
+            );
+            renderTable(filteredBooks);
+        }
+    
+        fetchBorrowedBooks().then(borrowedBooks => {
+            searchInput.addEventListener('input', () => filterBooks(borrowedBooks));
+    
+            // Sort books by due date
+            borrowedBooks.sort((a, b) => new Date(a.return_date) - new Date(b.return_date));
+    
+            // Initial render
+            renderTable(borrowedBooks);
+        });
+    });
+    </script>
+</body>
+</html>

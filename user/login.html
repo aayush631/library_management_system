@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Library Management System - Login</title>
+    <link rel="stylesheet" href="./src/login.css">
+</head>
+<body>
+    <div class="login-container">
+        <div class="login-box">
+            <a href="./landing.html" class="back-link">&larr; Back</a>
+            <h1>Login</h1>
+            <form action="../php/login.php" method="POST"> <!-- Adjust action attribute -->
+                <div class="input-group">
+                    <label for="username">UserId</label>
+                    <input type="text" id="userid" name="userid" required>
+                </div>
+                <div class="input-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" required>
+                </div>
+                <div class="input-group checkbox-group">
+                    <input type="checkbox" id="show-password" onclick="togglePassword()">
+                    <label for="show-password">Show Password</label>
+                </div>
+                
+                <button type="submit" class="btn">Login</button>
+                <p class="signup-link">Don't have an account? <a href="./signup.html">Sign Up</a></p>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        function togglePassword() {
+            const passwordField = document.getElementById("password");
+            const showPasswordCheckbox = document.getElementById("show-password");
+
+            if (showPasswordCheckbox.checked) {
+                passwordField.type = "text";
+            } else {
+                passwordField.type = "password";
+            }
+        }
+    </script>
+</body>
+</html>

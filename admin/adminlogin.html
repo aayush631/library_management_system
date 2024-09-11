@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Login - Library Management System</title>
+    <link rel="stylesheet" href="./src/adminlogin.css">
+</head>
+<body>
+    <div class="container">
+        <form id="login-form">
+            <h2>Admin Login</h2>
+            <div class="form-group">
+                <label for="admin-id">Admin ID:</label>
+                <input type="text" id="admin-id" name="admin-id" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" required>
+            </div>
+            <button type="submit"><a href="/admin/admindashboard.html">Login</a></button>
+            <p id="error-message" class="error-message"></p>
+        </form>
+    </div>
+    <!-- <script src="./src/adminlogin.js"></script> -->
+</body>
+</html>

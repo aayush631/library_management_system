@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Library Management System - Sign Up</title>
+    <link rel="stylesheet" href="./src/signup.css">
+</head>
+<body>
+    <div class="signup-container">
+        <div class="signup-box">
+            <a href="./landing.html" class="back-link">&larr; Back</a>
+            <h1>Sign Up</h1>
+            <form action="../php/signup.php" method="POST">
+                <div class="input-group">
+                    <label for="fullname">Full Name</label>
+                    <input type="text" id="fullname" name="fullname" required>
+                </div>
+                <div class="input-group">
+                    <label for="userid">UserId</label>
+                    <input type="text" id="userid" name="userid" required>
+                </div>
+                <div class="input-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                <div class="input-group">
+                    <label for="contact">Contact</label>
+                    <div class="contact-input">
+                        <select id="country-code" name="country-code" required>
+                            <option value="+977">Nepal (+977)</option>
+                            <option value="+91">India (+91)</option>
+                        </select>
+                        <input type="text" id="contact" name="contact" placeholder="Enter your contact number" required>
+                    </div>
+                </div>
+                <div class="input-group">
+                    <label for="password">Create Password</label>
+                    <input type="password" id="password" name="password" required>
+                </div>
+                <div class="input-group">
+                    <label for="confirm-password">Confirm Password</label>
+                    <input type="password" id="confirm-password" name="confirm-password" required>
+                </div>
+                <div class="input-group checkbox-group">
+                    <input type="checkbox" id="show-passwords" onclick="togglePasswords()">
+                    <label for="show-passwords">Show Passwords</label>
+                </div>
+                
+                <button type="submit" class="btn">Sign Up</button>
+                <p class="login-link">Already have an account? <a href="./login.html">Login</a></p>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        function togglePasswords() {
+            const passwordField = document.getElementById("password");
+            const confirmPasswordField = document.getElementById("confirm-password");
+            const showPasswordsCheckbox = document.getElementById("show-passwords");
+
+            const type = showPasswordsCheckbox.checked ? "text" : "password";
+            passwordField.type = type;
+            confirmPasswordField.type = type;
+        }
+    </script>
+</body>
+</html>

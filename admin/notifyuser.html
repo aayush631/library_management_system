@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notify Users - Library Management System</title>
+    <link rel="stylesheet" href="./src/notifyuser.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <img src="../icons/logo-1.png" alt="Logo" id="logo">
+            <nav>
+                <ul>
+                    <li><a href="./admindashboard.html">Home</a></li>
+                    <li><a href="./add-remove.html">Manage Users</a></li>
+                    <li><a href="./add-removebook.html">Manage Books</a></li>
+                    <li><a href="./location.html">Location & Rack</a></li>
+                    <li><a href="./issue.html">Issue Books</a></li>
+                    <li><a href="./receive.html">Receive Books</a></li>
+                    <li><a href="/user/landing.html">Logout</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    <main>
+        <div class="container">
+            <h1>Send Notification</h1>
+            <form id="notify-form">
+                <div class="input-group">
+                    <label for="userid">User ID</label>
+                    <input type="text" id="userid" name="userid" placeholder="Enter User ID (leave blank to notify all users)">
+                </div>
+                <div class="input-group">
+                    <label for="message">Message</label>
+                    <textarea id="message" name="message" placeholder="Enter your message" required></textarea>
+                </div>
+                <div class="action-buttons">
+                    <button type="submit">Send Notification</button>
+                </div>
+            </form>
+        </div>
+    </main>
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 Library Management System. All rights reserved.</p>
+        </div>
+    </footer>
+    <script src="./src/notifyuser.js"></script>
+</body>
+</html>

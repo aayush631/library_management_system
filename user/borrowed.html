@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Borrowed Books - Library Management System</title>
+    <link rel="stylesheet" href="./src/borrowed.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <img src="/icons/logo-1.png" alt="Logo" id="logo">
+            <nav>
+                <ul>
+                    <li><a href="./userpanel.html">Home</a></li>
+                    <li><a href="./borrowed.html" class="active">Borrowed Books</a></li>
+                    <li><a href="./aboutus.html">About Us</a></li>
+                    <li><a href="./userprofile.html">Profile</a></li>
+                    <li><a href="./landing.html">Logout</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    <main>
+        <div class="container">
+            <section class="search-section">
+                <input type="text" id="search" placeholder="Search for a book...">
+            </section>
+            <section class="table-section">
+                <table id="books-table">
+                    <thead>
+                        <tr>
+                            <th>Book Id</th>
+                            <th>Book Name</th>
+                            <th>Issued Date</th>
+                            <th>Return Date</th>
+                            <th>Fines</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>103</td>
+                            <td>Software Project Management</td>
+                            <td>2024-06-01</td>
+                            <td>2024-07-01</td>
+                            <td class="fines">Rs. 0</td>
+                            <td class="status">Not Returned</td>
+                        </tr>
+                        <tr>
+                            <td>102</td>
+                            <td>Software Engineering</td>
+                            <td>2023-06-01</td>
+                            <td>2023-06-15</td>
+                            <td class="fines">Rs. 0</td>
+                            <td class="status">Returned</td>
+                        </tr>
+                        <tr>
+                            <td>101</td>
+                            <td>Database Management System</td>
+                            <td>2023-06-01</td>
+                            <td>2023-06-15</td>
+                            <td class="fines">Rs. 0</td>
+                            <td class="status">Returned</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+        </div>
+    </main>
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 Library Management System. All rights reserved.</p>
+        </div>
+    </footer>
+    <script src="./src/borrowed.js"></script>
+</body>
+</html>

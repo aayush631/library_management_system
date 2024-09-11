@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - Manage Books</title>
+    <link rel="stylesheet" href="./src/add-removebook.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <img src="../icons/logo-1.png" alt="Logo" id="logo">
+            <nav>
+                <ul>
+                    <li><a href="./admindashboard.html">Home</a></li>
+                    <li><a href="./add-remove.html">Manage Users</a></li>
+                    <li><a href="./add-removebook.html" class="active">Manage Books</a></li>
+                    <li><a href="./location.html">Location & Rack</a></li>
+                    <li><a href="./issue.html">Issue Books</a></li>
+                    <li><a href="./receive.html">Receive Books</a></li>
+                    <li><a href="../user/landing.html">Logout</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    <main>
+        <div class="container">
+            <section class="manage-books">
+                <h2>Manage Books</h2>
+                <div class="form-container">
+                    <div class="form-box">
+                        <h3>Add Book</h3>
+                        <form id="add-book-form" method="post">
+                            <div class="input-group">
+                                <label for="book-id">Book ID</label>
+                                <input type="text" id="book-id" name="book-id" required>
+                            </div>
+                            <div class="input-group">
+                                <label for="book-name">Book Name</label>
+                                <input type="text" id="book-name" name="book-name" required>
+                            </div>
+                            <div class="input-group">
+                                <label for="location-rack">Location/Rack</label>
+                                <input type="text" id="location-rack" name="location-rack" required>
+                            </div>
+                            <div class="input-group">
+                                <label for="status">Status</label>
+                                <select id="status" name="status" required>
+                                    <option value="available">Available</option>
+                                    <option value="not available">Not Available</option>
+                                </select>
+                            </div>
+                            <button type="submit" class="btn">Add Book</button>
+                        </form>
+                    </div>
+                    <div class="form-box">
+                        <h3>Remove Book</h3>
+                        <form id="remove-book-form" method="post">
+                            <div class="input-group">
+                                <label for="remove-book-id">Book ID</label>
+                                <input type="text" id="remove-book-id" name="remove-book-id" required>
+                            </div>
+                            <div class="input-group">
+                                <label for="remove-book-name">Book Name</label>
+                                <input type="text" id="remove-book-name" name="remove-book-name" readonly>
+                            </div>
+                            <button type="submit" class="btn">Remove Book</button>
+                        </form>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 Library Management System. All rights reserved.</p>
+        </div>
+    </footer>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+    const addBookForm = document.getElementById('add-book-form');
+    const removeBookForm = document.getElementById('remove-book-form');
+    const removeBookIdInput = document.getElementById('remove-book-id');
+    const removeBookNameInput = document.getElementById('remove-book-name');
+
+    // Fetch book name when Book ID is entered in the Remove Book form
+    removeBookIdInput.addEventListener('blur', function() {
+        const bookId = removeBookIdInput.value.trim();
+        if (bookId) {
+            fetch('../php/get_book_name.php', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: `book-id=${bookId}`
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.book_name) {
+                    removeBookNameInput.value = data.book_name;
+                } else {
+                    alert('Book ID not found');
+                    removeBookNameInput.value = '';
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        }
+    });
+
+    // Handle Add Book form submission
+    addBookForm.addEventListener('submit', function(event) {
+        event.preventDefault(); // Prevent the default form submission
+        const formData = new FormData(addBookForm);
+
+        fetch('../php/add_book.php', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert('Book added successfully!');
+            } else {
+                alert('Error adding book: ' + data.error);
+            }
+            addBookForm.reset();
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+    });
+
+    // Handle Remove Book form submission
+    removeBookForm.addEventListener('submit', function(event) {
+        event.preventDefault(); // Prevent the default form submission
+        const formData = new FormData(removeBookForm);
+
+        fetch('../php/remove_book.php', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert('Book removed successfully!');
+            } else {
+                alert('Error removing book: ' + data.error);
+            }
+            removeBookForm.reset(); // Clear the form after submission
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+    });
+});
+
+    </script>
+      
+</body>
+</html>

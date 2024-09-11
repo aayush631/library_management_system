@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us - Library Management System</title>
+    <link rel="stylesheet" href="./src/aboutus.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <img src="../icons/logo-1.png" alt="Logo" id="logo">
+            <nav>
+                <ul class="menu">
+                    <li><a href="../user/userpanel.php">Home</a></li>
+                    <li><a href="../php/borrowed.php">Borrowed Books</a></li>
+                    <li><a href="./aboutus.html" class="active">About Us</a></li>
+                    <li><a href="../php/userprofile.php">Profile</a></li>
+                    <li><a href="./landing.html">Logout</a></li>
+                </ul>
+                <div class="hamburger-menu" id="hamburger-menu">
+                    <div class="hamburger-icon" id="hamburger-icon">&#9776;</div>
+                </div>
+                <div class="responsive-menu" id="responsive-menu">
+                    <div class="close-icon" id="close-icon">&times;</div>
+                    <ul>
+                        <li><a href="../user/userpanel.php">Home</a></li>
+                        <li><a href="../php/borrowed.php">Borrowed Books</a></li>
+                        <li><a href="./aboutus.html" class="active">About Us</a></li>
+                        <li><a href="../php/userprofile.php">Profile</a></li>
+                        <li><a href="./landing.html">Logout</a></li>
+                    </ul>
+                </div>
+            </nav>
+        </div>
+    </header>
+    <main>
+        <div class="container">
+            <section class="about-section">
+                <h2>About Us</h2>
+                <p>A library management system streamlines book cataloging, borrower management, 
+                and resource tracking. It enhances library efficiency by automating tasks like 
+                checkouts and returns. With digital capabilities, it ensures easy access to 
+                information for both librarians and patrons, promoting a seamless library experience.</p>
+                <h3>Connect with Us</h3>
+                <div class="social-icons">
+                    <a href="https://www.facebook.com/groups/aayushbhandari" target="_blank"><img src="../icons/facebook.png" alt="Facebook"></a>
+                    <a href="https://www.instagram.com/aayushbhandari6/" target="_blank"><img src="../icons/insta.png" alt="Instagram"></a>
+                    <a href="https://www.youtube.com/@aayushbhandari" target="_blank"><img src="../icons/youtube.png" alt="YouTube"></a>
+                    <a href="https://wa.me/9779812345678" target="_blank">
+                        <img src="../icons/whats.png" alt="Whats App">
+                    </a>
+                </div>
+                <h3>Feedback</h3>
+                <form id="feedback-form" action="../php/submit_feedback.php" method="POST">
+                    <div class="input-group">
+                        <label for="feedback">Your Message</label>
+                        <textarea id="feedback" name="feedback" rows="4" required></textarea>
+                    </div>
+                    <button type="submit" class="btn">Submit</button>
+                </form>
+                <!-- Feedback message display -->
+                <div id="feedback-message">
+                    <!-- The feedback message will be displayed here -->
+                </div>
+            </section>
+        </div>
+    </main>
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 Library Management System. All rights reserved.</p>
+        </div>
+    </footer>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const messageElement = document.getElementById("feedback-message");
+
+            // Get query parameters from URL
+            const urlParams = new URLSearchParams(window.location.search);
+            const status = urlParams.get('status');
+
+            if (status) {
+                if (status === 'success') {
+                    messageElement.textContent = 'Feedback submitted successfully!';
+                    messageElement.style.backgroundColor = '#d4edda';
+                    messageElement.style.color = '#155724';
+                } else if (status === 'error') {
+                    messageElement.textContent = 'Failed to submit feedback. Please try again.';
+                    messageElement.style.backgroundColor = '#f8d7da';
+                    messageElement.style.color = '#721c24';
+                } else if (status === 'user_not_found') {
+                    messageElement.textContent = 'User not found.';
+                    messageElement.style.backgroundColor = '#f8d7da';
+                    messageElement.style.color = '#721c24';
+                } else if (status === 'not_logged_in') {
+                    messageElement.textContent = 'You must be logged in to submit feedback.';
+                    messageElement.style.backgroundColor = '#f8d7da';
+                    messageElement.style.color = '#721c24';
+                }
+
+                // Show the feedback message
+                messageElement.style.display = 'block';
+
+                // Hide the feedback message after 5 seconds
+                setTimeout(function () {
+                    messageElement.style.display = 'none';
+                }, 5000);
+
+                // Clear the URL parameters
+                history.replaceState(null, '', window.location.pathname);
+            }
+
+            const hamburgerIcon = document.getElementById("hamburger-icon");
+            const responsiveMenu = document.getElementById("responsive-menu");
+            const closeIcon = document.getElementById("close-icon");
+
+            // Toggle the responsive menu
+            hamburgerIcon.addEventListener("click", function () {
+                responsiveMenu.style.display = "flex";
+            });
+
+            closeIcon.addEventListener("click", function () {
+                responsiveMenu.style.display = "none";
+            });
+
+            // Close the responsive menu when clicking outside of it
+            window.addEventListener("click", function (event) {
+                if (event.target == responsiveMenu) {
+                    responsiveMenu.style.display = "none";
+                }
+            });
+        });
+    </script>
+</body>
+</html>

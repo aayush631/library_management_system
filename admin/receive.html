@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - Receive Book</title>
+    <link rel="stylesheet" href="./src/receive.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <img src="../icons/logo-1.png" alt="Logo" id="logo">
+            <nav>
+                <ul>
+                    <li><a href="./admindashboard.html">Home</a></li>
+                    <li><a href="./add-remove.html">Manage Users</a></li>
+                    <li><a href="./add-removebook.html">Manage Books</a></li>
+                    <li><a href="./location.html">Location & Rack</a></li>
+                    <li><a href="./issue.html">Issue Books</a></li>
+                    <li><a href="./receive.html" class="active">Receive Books</a></li>
+                    <li><a href="../user/landing.html">Logout</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    <main>
+        <div class="container">
+            <section class="receive-book">
+                <h2>Receive Book</h2>
+                <form id="receive-book-form" method="POST">
+                    <div class="input-group">
+                        <label for="book-id">Book ID</label>
+                        <input type="text" id="book-id" name="book-id" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="book-name">Book Name</label>
+                        <input type="text" id="book-name" name="book-name" required readonly>
+                    </div>
+                    <div class="input-group">
+                        <label for="user-id">User ID</label>
+                        <input type="text" id="user-id" name="user-id" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="user-fullname">User Full Name</label>
+                        <input type="text" id="user-fullname" name="user-fullname" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="issued-date">Last Issued Date</label>
+                        <input type="date" id="issued-date" name="issued-date" required readonly>
+                    </div>
+                    <div class="input-group">
+                        <label for="return-date">Return Date</label>
+                        <input type="date" id="return-date" name="return-date" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="fine">Fine</label>
+                        <input type="number" id="fine" name="fine" required readonly>
+                    </div>
+                    <div class="input-group">
+                        <label for="status">Status</label>
+                        <select id="status" name="status" required>
+                            <option value="Received">Received</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn">Receive Book</button>
+                </form>
+            </section>
+        </div>
+    </main>
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 Library Management System. All rights reserved.</p>
+        </div>
+    </footer>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const receiveBookForm = document.getElementById('receive-book-form');
+
+            receiveBookForm.addEventListener('submit', function(event) {
+                event.preventDefault();
+
+                const bookId = document.getElementById('book-id').value;
+                const bookName = document.getElementById('book-name').value;
+                const userId = document.getElementById('user-id').value;
+                const userFullname = document.getElementById('user-fullname').value;
+                const lastIssuedDate = document.getElementById('issued-date').value;
+                const returnDate = document.getElementById('return-date').value;
+                const fine = document.getElementById('fine').value;
+                const status = document.getElementById('status').value;
+
+                const receivedBook = {
+                    bookId,
+                    bookName,
+                    userId,
+                    userFullname,
+                    lastIssuedDate,
+                    returnDate,
+                    fine,
+                    status
+                };
+
+                fetch('../php/receive_book.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(receivedBook)
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert(`Book "${bookName}" received from "${userFullname}" successfully!`);
+                        receiveBookForm.reset();
+                    } else {
+                        alert(`Failed to receive book: ${data.message}`);
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+            });
+
+            const fetchIssuedBookDetails = (userId, bookId) => {
+                fetch(`../php/get_issued_book_details.php?user_id=${userId}&book_id=${bookId}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        document.getElementById('book-name').value = data.book_name;
+                        document.getElementById('user-id').value = data.user_id;
+                        document.getElementById('user-fullname').value = data.user_fullname;
+                        document.getElementById('issued-date').value = data.return_date;
+                        document.getElementById('fine').value = data.fine;
+                        document.getElementById('return-date').value = new Date().toISOString().split('T')[0];
+                    } else {
+                        alert(`Failed to fetch book details: ${data.message}`);
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+            };
+
+            document.getElementById('book-id').addEventListener('blur', function() {
+                const bookId = this.value;
+                const userId = document.getElementById('user-id').value;
+
+                if (userId && bookId) {
+                    fetchIssuedBookDetails(userId, bookId);
+                }
+            });
+
+            document.getElementById('user-id').addEventListener('blur', function() {
+                const userId = this.value;
+                const bookId = document.getElementById('book-id').value;
+
+                if (userId && bookId) {
+                    fetchIssuedBookDetails(userId, bookId);
+                }
+            });
+        });
+    </script>
+</body>
+</html>
